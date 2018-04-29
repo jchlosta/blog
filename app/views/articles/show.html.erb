@@ -1,21 +1,40 @@
 <p>
-<strong>Title:</strong>
-<%= @article.title %>
+	<strong>Title:</strong>
+	<%= @article.title %>
 </p>
 
 <p>
-<strong>Text:</strong>
-<%= @article.text %>
+	<strong>Text:</strong>
+	<%= @article.text %>
 </p>
 
 <p>
-<strong>Created at:</strong>
-<%= @article.created_at %>
+	<strong>Created at:</strong>
+	<%= @article.created_at %>
 </p>
+
 <p>
-<strong>Updated at:</strong>
-<%= @article.updated_at %>
+	<strong>Updated at:</strong>
+	<%= @article.updated_at %>
 </p>
+
+<%= form_for(@article.comments.build) do |f| %>
+	<%= f.hidden_field :article_id %>
+	
+	<p>
+		<%= f.label :commenter %>
+		<%= f.text_field :commenter %>
+	</p>
+
+	<p>
+		<%= f.label :body %>
+		<%= f.text_area :body %>
+	</p>
+
+	<p>
+		<%= f.submit %>
+	</p>
+<% end %>
 
 <%= link_to "Back", articles_path %>
 <%= link_to "Edit", edit_article_path(@article) %>
