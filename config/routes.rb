@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  devise_for :users
   # CRUD create, read, update, delete
 
   root 'welcome#index'
