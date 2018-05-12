@@ -5,8 +5,7 @@ class ArticlesController < ApplicationController
   def index
     @articles = Article.all
     if params[:q].present?
-      @articles = @articles.select do |article|
-      article.tags.include? params[:q].downcase
+      @articles = @articles.where("? = any(tags)", params[:q].downcase)
     end
   end
 
