@@ -21,7 +21,7 @@ class ArticlesController < ApplicationController
   end
 
   def show
-    @comment = @article.comments.build
+    @comment = @article.comments.build(commenter: session[:commenter])
   end
 
   def edit
