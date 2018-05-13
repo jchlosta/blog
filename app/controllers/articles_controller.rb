@@ -3,7 +3,8 @@ class ArticlesController < ApplicationController
   before_action :find_article, only: %i[show update edit destroy]
   before_action :authorize_article, only: %i[edit update destroy]
   def index
-    @articles = Article.all
+    @articles = Article.page(params[:page])
+
     if params[:q].present?
       @articles = @articles.where("? = any(tags)", params[:q].downcase)
     end
