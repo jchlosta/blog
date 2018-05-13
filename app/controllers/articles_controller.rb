@@ -2,6 +2,7 @@ class ArticlesController < ApplicationController
 
   before_action :find_article, only: %i[show update edit destroy]
   before_action :authorize_article, only: %i[edit update destroy]
+  
   def index
     @articles = Article.page(params[:page])
 
@@ -15,7 +16,7 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new(article_params)
+    @article = Article.new(permitted_attributes(Article))
     @article.author = current_user
     if @article.save
       flash[:notice] = 'Your article has been saved'
@@ -33,7 +34,7 @@ class ArticlesController < ApplicationController
   def edit; end
 
   def update
-    if @article.update(article_params)
+    if @article.update(permitted_attributes(@article))
       flash[:notice] = 'Your article has been update'
       redirect_to article_path(@article)
     else
@@ -49,18 +50,11 @@ class ArticlesController < ApplicationController
 
   private
 
-  def article_params
-    params.require(:article).permit(:title, :text, :tags)
-  end
-
   def find_article
     @article = Article.find(params[:id])
   end
 
   def authorize_article
-    if @article.author != current_user
-      flash[:alert] = 'This is not your article'
-      redirect_to articles_path
-    end
+    authorize @article
   end
 end
